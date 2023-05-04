@@ -1,0 +1,19 @@
+---
+title: "tk_subsampler"
+format: pdf
+editor: visual
+---
+
+## Data Input
+
+```{r}
+source("scripts/data_download.R")
+```
+
+You can add options to executable code like this
+
+```{r}
+source("scripts/data_clean.R")
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
