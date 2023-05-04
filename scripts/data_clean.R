@@ -116,3 +116,4 @@ write.fasta(sequences = fasta_ds,
             names = names(fasta_ds),
             file.out = "data_output/fasta_ds.fasta")
 
+#github test
