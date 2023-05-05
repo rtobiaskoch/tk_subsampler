@@ -51,20 +51,20 @@ t = distinct(mdata_c, Location, caribbean, florida)
 
 #variables to keep in final dataset
 keep = mdata_c %>%
-  filter(florida == 0 &
-         caribbean == 1 | yale == 1)
+  filter(florida == 0) %>%
+  filter(caribbean == 1 | yale == 1)
 
 #variables that aren't florida, caribbean or yale but have less than 10 samples so dont need to be downsampled
 keep_lt10 =  mdata_c %>%
-  filter(florida == 0 &
-         caribbean == 0 &
+  filter(florida == 0) %>%
+  filter(caribbean == 0 &
          yale == 0 &
          n_obs <= 10)
   
 #variables that aren't florida, caribbean or yale but have more than 10 samples so dont need to be downsampled
 ds = mdata_c %>%
-  filter(florida == 0 &
-         caribbean == 0 &
+  filter(florida == 0) %>%
+  filter(caribbean == 0 &
          yale == 0 &
          n_obs > 10)
 
