@@ -8,7 +8,8 @@ pkg = c("tidyverse", "seqinr")
 pacman::p_load(pkg, character.only = T)
 
 #list all metadata files
-fn = list.files(pattern = "metadata.tsv", 
+fn = list.files("data_input",
+                pattern = "metadata.tsv", 
                 recursive = T, 
                 full.names = T)
 
@@ -32,10 +33,12 @@ to_character <- function(df) {
 
 # apply the function to each data frame in the list
 mdata <- map(t, to_character) %>%
-  bind_rows()
+  bind_rows() %>%
+  distinct_all()
 
 save(mdata, file = "data_mid/metadata.RData")
 
+rm(t)
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -45,15 +48,26 @@ save(mdata, file = "data_mid/metadata.RData")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 #list all metadata files
-fn = list.files(pattern = ".fasta$", 
+fn = list.files("data_input",
+                pattern = ".fasta$", 
                 recursive = T, 
                 full.names = T)
 
+sero = str_extract(fn, "(?<=/)[^/]+")
+
+
+
 
 #read files
-t = map(fn, read.fasta) 
+fasta = map(fn, read.fasta) 
+names(fasta) = sero
 
-fasta = do.call(c, t)
+fasta_all = do.call(c, fasta)
+
+#strains in fasta but not in metadata
+x = list(setdiff(names(fasta_all),mdata$strain))
+x = data.frame(x)
+write.csv(x, "data_output/missing sample from metadata.csv")
   
 # apply the function to each data frame in the list
 
