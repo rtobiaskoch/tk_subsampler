@@ -29,17 +29,19 @@ mdata_c = mdata %>%
                         1,0),
         caribbean = if_else(grepl(caribbean_countries, Location),
                               1,0),
-         florida = if_else(grepl("^Florida", Location),
-                           1,0)
+        florida = if_else(grepl("^Florida", Location),
+                           1,0),
+        complete_date = if_else(grepl("XX$", date),
+                                0,1)
         ) %>%
   mutate(year = substr(date, 1,4)) %>%
   group_by(Location, year) %>% 
   mutate(n_obs = n()) %>% #get size of group to filter for downsample
   ungroup()
   
+write.csv(mdata_c, "data_mid/mdata_c.csv")
 
 t = distinct(mdata_c, Location, caribbean, florida)
-
 
 keep = mdata_c %>%
   filter(florida == 0 &
